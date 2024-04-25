@@ -90,3 +90,69 @@ def lambda_handler(event, context):
     
     return responseObject
 ```
+
+## Step Function with Lambda
+<img src="images/4.png" alt="Networking 1" height="400" width="700">
+
+ProcessPurchase Lambda Function:
+```
+from __future__ import print_function
+
+import json
+import urllib
+import boto3
+import datetime
+
+print("Loading function...")
+
+def lambda_handler(event, context):
+    
+    print("Received message from Step Functions: ")
+    print(event)
+    
+    response = {}
+    response['TransactionType'] = event['TransactionType']
+    response['Timestamp'] = datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")
+    response['Message'] = "Hello from lambda land inside the ProcessPurchase function"
+    
+    return response
+```
+
+* Create a IAM Policy for Step Function
+
+Step Function Code:
+```
+{
+  "Comment": "Transaction Processor State Machine",
+  "StartAt": "ProcessTransaction",
+  "States": {
+    "ProcessTransaction": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.TransactionType",
+          "StringEquals": "PURCHASE",
+          "Next": "ProcessPurchase"
+        },
+        {
+          "Variable": "$.TransactionType",
+          "StringEquals": "REFUND",
+          "Next": "ProcessRefund"
+        }
+      ]
+    },
+    "ProcessRefund": {
+      "Type": "Task",
+      "Resource": "arn",
+      "End": true
+    },
+    "ProcessPurchase": {
+      "Type": "Task",
+      "Resource": "arn",
+      "End": true
+    }
+  }
+}
+```
+
+<img src="images/5.png" alt="Networking 1" height="250" width="700">
