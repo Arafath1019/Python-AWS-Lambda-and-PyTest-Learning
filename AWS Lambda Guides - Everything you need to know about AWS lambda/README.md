@@ -56,3 +56,37 @@ def lambda_handler(event, context):
 
     print(responseJson)
 ```
+
+## API Gateway to Lambda
+
+<img src="images/3.png" alt="Networking 1" height="200" width="700">
+
+TransactionProcessor Lambda Function:
+```
+import json
+
+print("Loading function")
+
+def lambda_handler(event, context):
+    transactionId = event["queryStringParameters"]["transactionId"]
+    transactionType = event["queryStringParameters"]["type"]
+    transactionAmount = event["queryStringParameters"]["amount"]
+    
+    print("TransactionId", transactionId)
+    print("TransactionType", transactionType)
+    print("TransactionAmount", transactionAmount)
+    
+    transactionResponse = {}
+    transactionResponse["transactionId"] = transactionId
+    transactionResponse["type"] = transactionType
+    transactionResponse["transactionAmount"] = transactionAmount
+    transactionResponse["message"] = "Success"
+    
+    responseObject = {}
+    responseObject["statusCode"] = 200
+    responseObject["headers"] = {}
+    responseObject["headers"]["content-type"] = "application/json"
+    responseObject["body"] = json.dumps(transactionResponse)
+    
+    return responseObject
+```
