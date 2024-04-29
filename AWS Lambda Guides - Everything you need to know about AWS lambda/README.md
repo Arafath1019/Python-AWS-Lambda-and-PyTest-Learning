@@ -156,3 +156,63 @@ Step Function Code:
 ```
 
 <img src="images/5.png" alt="Networking 1" height="250" width="700">
+
+## AWS DynamoDB Streams to Lambda
+<img src="images/6.png" alt="Networking 6" height="250" width="700">
+
+GameEventProcess Lambda:
+
+```
+import json
+
+def lambda_handler(event, context):
+    print("-------------------------")
+    try:
+        for record in events["Records"]:
+            if record["eventName"] == "INSERT":
+                handle_insert(record)
+            elif record["eventName"] == "MODIFY":
+                handle_modify(record)
+            elif record["eventName"] == "REMOVE":
+                handle_remove(record)
+        print("-----------------------")
+    except Exception as e:
+        print(e)
+        print("------------------")
+        return "Oops!"
+
+def handle_insert(record):
+    print("Handling INSERT event")
+    
+    newImage = record["dynamodb"]["NewImage"]
+    newPlayerId = newImage["playerId"]["S"]
+    
+    print("New row added with playerId=" + playerId)
+    
+    print("Done handling INSERT event")
+
+def handle_modify(record):
+    print("Handling MODIFY event")
+    
+    oldImage = record["dynamodb"]["OldImage"]
+    oldScore = oldImage["score"]["N"]
+    
+    newImage = record["dynamodb"]["NewImage"]
+    newScore = newImage["score"]["N"]
+    
+    if oldScore != newImage:
+        print("Scores changed - oldScore" + str(oldScore) + ", newScore=" + str(newScore))
+    
+    print("Done handling MODIFY event")
+    
+def handle_remove(record):
+    print("Handling REMOVE event")
+    
+    oldImage = record["dynamodb"]["oldImage"]
+    
+    oldPlayerId = oldImage["playerId"]["S"]
+    
+    print("Row removed with playerId = " + oldPlayerId)
+    print("Done handling REMOVE event")
+
+```
