@@ -272,3 +272,31 @@ def lambda_handler(event, context):
         print("---------")
 
 ```
+
+
+## Upload to S3 from Lambda
+TransactionPutObject Lambda:
+```
+import json
+import boto3
+
+s3 = boto3.client("s3")
+
+def lambda_handler(event, context):
+    bucket = "aws-simplified-transactions-test"
+    
+    transactionsToUpload = {}
+    transactionsToUpload["transactionId"] = "12345"
+    transactionsToUpload["type"] = "PURCHASE"
+    transactionsToUpload["amoubt"] = 20
+    transactionsToUpload["customerId"] = "CID-11111"
+    
+    fileName = "CID-11111" + ".json"
+    
+    uploadByteStream = bytes(json.dumps(transactionsToUpload).encode("UTF-8"))
+    
+    s3.put_object(Bucket=bucket, Key=fileName, Body=uploadByteStream)
+    
+    print("Put Completed")
+
+```
