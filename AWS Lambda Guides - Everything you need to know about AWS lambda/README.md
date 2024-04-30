@@ -222,6 +222,8 @@ def handle_remove(record):
 
 LambdaProcessor Transaction:
 ```
+import urllib
+
 def lambda_handler(event, context):
   bucket = event["Records][0]["s3"]["bucket"]["name"]
 
@@ -241,4 +243,32 @@ def lambda_handler(event, context):
   except Exception as e:
     print(e)
     raise e
+```
+
+## Download a S3 file from Lambda
+
+TransactionsQueryFromS3 Lambda:
+```
+import json
+import boto3
+
+s3 = boto3.client("s3")
+
+def lambda_handler(event, context):
+    bucket = "aws-simplified-transactions-test"
+    key = "transactions.json"
+    
+    response = s3.get_object(Bucket=bucket, Key=key)
+    
+    content = response["Body"]
+    
+    jsonObject = json.loads(content.read())
+    
+    transactions = jsonObject["transactions"]
+    
+    for record in transactions:
+        print("TransactionType " + record["transactionType"])
+        print("TransactionAmount " + str(record["amount"]))
+        print("---------")
+
 ```
