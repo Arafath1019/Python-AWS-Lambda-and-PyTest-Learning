@@ -300,3 +300,25 @@ def lambda_handler(event, context):
     print("Put Completed")
 
 ```
+
+## Download and Process a CSV file with AWS Lambda
+CSVReader Lambda:
+```
+import csv
+import botocore.vendored import requests
+
+url = "https://people.sc.fsu.edu/~jburkardt/data/csv/hurricanes.csv"
+
+def lambda_handler(event, context):
+  session = requests.Session()
+  raw_data = session.get(url)
+
+  decoded_content = raw_data.content.decode("utf-8)
+  reader = csv.reader(decoded_content.splitlines(), delimiter=",")
+
+  rows = list(reader)
+
+  for row in rows:
+    print(row)
+
+```
