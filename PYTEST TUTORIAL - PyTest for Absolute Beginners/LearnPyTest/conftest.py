@@ -8,10 +8,10 @@ import pytest
 #     yield
 #     print("Close Browser")
 
-@pytest.fixture(scope="session", autouse=True)
-def setUp():
-    print("Launch browser")
-    print("Login")
-    print("Browse products")
-    yield
-    print("Close Browser")
+# @pytest.fixture(scope="session", autouse=True)
+# def setUp():
+#     print("Launch browser")
+#     print("Login")
+#     print("Browse products")
+#     yield
+#     print("Close Browser")
