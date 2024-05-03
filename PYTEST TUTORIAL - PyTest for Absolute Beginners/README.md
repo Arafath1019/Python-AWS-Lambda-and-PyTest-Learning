@@ -17,3 +17,15 @@
 - Run "pytest" command inside project directory
 - Run "pytest -v", "pytest -v -s" commands for detail tests
 - Run test on specific file: "pytest file_directory"
+
+## Grouping tests in PyTest
+- Mark a test case method using the @pytest.mark decorator with a builtin or custom marker, for example: 
+```
+@pytest.mark.sanity
+def testCalculation():
+    assert 2+2 == 4
+```
+- Run a test using marker: pytest -m sanity
+- Check list of built in markers: pytest --marker
+- skip marker: @pytest.mark.skip
+- xfail marker:  @pytest.mark.xfail
