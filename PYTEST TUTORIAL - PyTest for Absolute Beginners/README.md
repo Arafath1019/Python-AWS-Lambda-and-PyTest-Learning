@@ -9,6 +9,11 @@
 - Uninstall pytest: pip3 uninstall pytest
 
 ## Naming convention for pytest python file
-- Starting of filename like "test_" or ending filename like "_test"
+- Starting of filename like "test_*.py" or ending filename like "*_test.py"
 - Any method inside the test file will be considered as a test
 - Method name for test will be start with "test", for example: testLogin()
+
+## Execute PyTest Tests from Command line
+- Run "pytest" command inside project directory
+- Run "pytest -v", "pytest -v -s" commands for detail tests
+- Run test on specific file: "pytest file_directory"
