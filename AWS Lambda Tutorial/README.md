@@ -16,3 +16,10 @@ def lambda_handler(event, context):
     
     return "Return from lambda"
 ```
+
+## Setting cron job on lambda
+1. Add CloudWatch Evevnts as trigger in lambda function
+2. Configure the CloudWatch Events as below
+- set name for the event
+- set a new role for this
+- set role type as Schedule expression like rate(1 day), rate(1 minute) etc
