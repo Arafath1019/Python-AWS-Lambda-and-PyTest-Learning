@@ -69,3 +69,22 @@ def lambda_handler(event, context):
         "body": json.dumps("Hello from lambda")
     }
 ```
+
+## Upload data to S3 without saving to file via lambda function
+```
+import json
+import boto3
+from pprint import pprint
+
+def lambda_handler(event, context):
+    client = boto3.client("ec2")
+    s3 = boto3.client("s3")
+    status = client.describe_instance_status(IncludeAllInstances=True)
+
+    s3.put_object(Bucket="s3_bucket_name", Key="data-log.txt", Body=str(status))
+
+    return {
+        "statusCode": 200,
+        "body": json.dumps("Hello from lambda")
+    }
+```
