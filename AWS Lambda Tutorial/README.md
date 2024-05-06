@@ -43,3 +43,29 @@ def lambda_handler(event, context):
     print(event)
     return "Return from lambda function2"
 ```
+
+## Upload file from Lambda function to S3 bucket
+lambda_handler function:
+```
+import json
+import boto3
+import pprint from pprint
+
+def lambda_handler(event, context):
+    client = boto3.client("ec2")
+    s3 = boto3.client("s3")
+
+    status = client.describe_instance_status(IncludeAllInstances = True)
+    with open("/tmp/log.txt", "w") as f:
+        json.dumps(status, f)
+    
+    s3.upload_file("/tmp/log.txt", "s3-bucket-name", "logs.txt")
+
+    for i in status["InstanceStatuses"]:
+        print("AvailabilityZone : ", i["AvailabilityZone"])
+
+    return {
+        "statusCode": 200,
+        "body": json.dumps("Hello from lambda")
+    }
+```
