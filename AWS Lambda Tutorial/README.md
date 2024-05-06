@@ -23,3 +23,23 @@ def lambda_handler(event, context):
 - set name for the event
 - set a new role for this
 - set role type as Schedule expression like rate(1 day), rate(1 minute) etc
+
+## Invoke lambda function from another lambda function
+
+Lambda Function1:
+```
+import boto3, json
+def lambda_handler(event, context):
+    invokelam = boto3.client("lambda", region_name="us-east-1")
+    payload = {"message": "Hi, you have been invoked"}
+    response = invokelam.invoke(FunctionName="lambda_function2", InvocationType="RequestResponse", Payload=json.dumps(payload))
+    print(response["payload"].read())
+    return "Hello from lambda"
+```
+
+Lambda Function2:
+```
+def lambda_handler(event, context):
+    print(event)
+    return "Return from lambda function2"
+```
